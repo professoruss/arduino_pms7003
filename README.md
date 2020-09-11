@@ -7,4 +7,5 @@ HTIT-W8266 | PMS7003
 1. GND     | 1. GND
 2. 5V      | 2. VCC
 9. RX      | 3. RX
-8. TX      | 4. TX```
+8. TX      | 4. TX
+```
