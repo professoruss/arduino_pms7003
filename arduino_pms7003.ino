@@ -32,36 +32,36 @@ int PM_AE_UG_1_0;
 int PM_AE_UG_2_5;
 int PM_AE_UG_10_0;
 
+/* Returns a semi-unique id for the device. The id is based
+*  on part of a MAC address or chip ID so it won't be
+*  globally unique. */
+uint16_t GetDeviceId()
+{
+#if defined(ARDUINO_ARCH_ESP32)
+  return ESP.getEfuseMac();
+#else
+  return ESP.getChipId();
+#endif
+}
+
+/* Append a semi-unique id to the name template */
+String MakeMine(const char *NameTemplate)
+{
+  uint16_t uChipId = GetDeviceId();
+  String Result = String(NameTemplate) + String(uChipId, HEX);
+  return Result;
+}
+
+String MyName = MakeMine("ESP8266-");
+
+
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 
 void handleRoot();              // function prototypes for HTTP handlers
 void handleNotFound();
 
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-  pmsSerial.begin(9600);
-  Serial.println();
-  pms.passiveMode();    // Switch to passive mode
-
-  // Default state after sensor power, but undefined after ESP restart e.g. by OTA flash, so we have to manually wake up the sensor for sure.
-  // Some logs from bootloader is sent via Serial port to the sensor after power up. This can cause invalid first read or wake up so be patient and wait for next read cycle.
-  pms.wakeUp();
-
-#ifdef DEEP_SLEEP
-  delay(PMS_READ_DELAY);
-  readData();
-  pms.sleep();
-  ESP.deepSleep(PMS_READ_INTERVAL * 1000);
-#endif // DEEP_SLEEP
-
-  u8g2.begin();
-  u8g2.setFont(u8g2_font_ncenB14_tr);
-  u8g2.setCursor(0,20);
-  u8g2.print("AQI Sensor");
-  u8g2.sendBuffer();
-  delay(1000);
-  
+void ConnectToWiFi()
+{
   //WiFiManager
   //Local intialization. Once its business is done, there is no need to keep it around
   u8g2.clear();          // clear the internal memory
@@ -81,19 +81,19 @@ void setup() {
 
   //tries to connect to last known settings
   //if it does not connect it starts an access point with the specified name
-  //here  "AutoConnectAP" with password "password"
+  //here  "ESP8266-<uniqueid>" with password "password"
   //and goes into a blocking loop awaiting configuration
   u8g2.clear();          // clear the internal memory
   u8g2.setCursor(0,10);
   u8g2.setFont(u8g2_font_ncenB08_tr); // choose a suitable font
   u8g2.print("Connect to");
   u8g2.setCursor(0,20);
-  u8g2.print("AutoConnectAP");
+  u8g2.print(MyName);
   u8g2.setCursor(0,30);
   u8g2.print("to configure WIFI");
   u8g2.sendBuffer();
   delay(1000);
-  if (!wifiManager.autoConnect("AutoConnectAP", "")) {
+  if (!wifiManager.autoConnect(MyName.c_str(), "")) {
     Serial.println("failed to connect, we should reset as see if it connects");
     u8g2.clear();          // clear the internal memory
     u8g2.setCursor(0,20);
@@ -129,19 +129,55 @@ void setup() {
   u8g2.sendBuffer();
   delay(1000);
 
-  if (!MDNS.begin("esp8266")) {             // Start the mDNS responder for esp8266.local
-    Serial.println("Error setting up MDNS responder!");
+}
+void AdvertiseServices() {
+  if (MDNS.begin(MyName.c_str())) {             // Start the mDNS responder for esp8266.local
     u8g2.clear();
     u8g2.setCursor(0,10);
-    u8g2.print("MDNS error");
+    u8g2.print("MDNS started");
     u8g2.sendBuffer();
     delay(1000);
+
+    MDNS.addService("http", "tcp", 80);
+  } else {
+    while (1)
+      {
+        Serial.println("Error setting up MDNS responder!");
+        u8g2.clear();
+        u8g2.setCursor(0,10);
+        u8g2.print("MDNS error");
+        u8g2.sendBuffer();
+        delay(1000);
+      }
   }
-  u8g2.clear();
-  u8g2.setCursor(0,10);
-  u8g2.print("MDNS started");
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  pmsSerial.begin(9600);
+  Serial.println();
+  pms.passiveMode();    // Switch to passive mode
+
+  // Default state after sensor power, but undefined after ESP restart e.g. by OTA flash, so we have to manually wake up the sensor for sure.
+  // Some logs from bootloader is sent via Serial port to the sensor after power up. This can cause invalid first read or wake up so be patient and wait for next read cycle.
+  pms.wakeUp();
+
+#ifdef DEEP_SLEEP
+  delay(PMS_READ_DELAY);
+  readData();
+  pms.sleep();
+  ESP.deepSleep(PMS_READ_INTERVAL * 1000);
+#endif // DEEP_SLEEP
+
+  u8g2.begin();
+  u8g2.setFont(u8g2_font_ncenB14_tr);
+  u8g2.setCursor(0,20);
+  u8g2.print("AQI Sensor");
   u8g2.sendBuffer();
   delay(1000);
+
+  ConnectToWiFi();
 
   server.on("/", handleRoot);               // Call the 'handleRoot' function when a client requests URI "/"
   server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
@@ -154,7 +190,8 @@ void setup() {
   u8g2.sendBuffer();
   delay(1000);
 
-  MDNS.addService("http", "tcp", 80);
+  AdvertiseServices();
+
 }
 
 void readData()
@@ -239,7 +276,7 @@ void timerCallback() {
 
 
 void handleRoot() {
-  server.send(200, "text/html", "{ \"Hostname\": \"esp8266\", \"Data\": { \"PM1.0\": \"" + String((int)PM_AE_UG_1_0) + "\", \"PM2.5\": \"" + String((int)PM_AE_UG_2_5) + "\", \"PM10\": \"" + String((int)PM_AE_UG_10_0) + "\"}}");
+  server.send(200, "text/json", "{ \"Hostname\": \"" + MyName + "\", \"Data\": { \"PM1.0\": \"" + String((int)PM_AE_UG_1_0) + "\", \"PM2.5\": \"" + String((int)PM_AE_UG_2_5) + "\", \"PM10\": \"" + String((int)PM_AE_UG_10_0) + "\"}}");
 }
 
 void handleNotFound(){
@@ -247,6 +284,8 @@ void handleNotFound(){
 }
 
 void loop() {
+
+  MDNS.update();
 
 #ifndef DEEP_SLEEP
   static uint32_t timerLast = 0;
