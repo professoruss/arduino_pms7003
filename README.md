@@ -3,9 +3,18 @@ Horrible code to read data from a Plantower PMS7003 sensor via Arduino and serve
 
 ## wiring
 ```
-HTIT-W8266 | PMS7003
-1. GND     | 1. GND
-2. 5V      | 2. VCC
-9. RX      | 3. RX
-8. TX      | 4. TX
+    __usb__                          _____
+  -|       |- GND ------------ GND -|     |
+  -|       |- 5V ------------- VCC -|     |
+  -|       |-               |-  RX -|     |
+  -|       |-           |---|-- TX -|_____|
+  -|       |-           |   |       PMS7003
+  -|       |-           |   |
+  -|       |-           |   |
+  -|       |- TX (GPIO3)-   |
+  -|       |- RX (GPIO4)----|
+  -|       |-
+  -|       |-
+  -|_______|-
+   HTIT-W8266
 ```
