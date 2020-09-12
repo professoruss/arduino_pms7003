@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
 
 //needed for library
@@ -5,6 +6,7 @@
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager
 #include <ESP8266mDNS.h>
+#include <arduino_homekit_server.h>
 
 #include <U8g2lib.h>
 
@@ -139,6 +141,16 @@ void AdvertiseServices() {
     delay(1000);
 
     MDNS.addService("http", "tcp", 80);
+/*    MDNS.addService("hap", "tcp", 80);
+    MDNS.addServiceTxt("hap", "tcp", "md", "ESP8266AQI"); // model name
+    MDNS.addServiceTxt("hap", "tcp", "pv", "1.0"); // protocol version
+    MDNS.addServiceTxt("hap", "tcp", "id", "A0:20:A6:15:46:44"); // device id
+    MDNS.addServiceTxt("hap", "tcp", "c#", "3"); // configuration number
+    MDNS.addServiceTxt("hap", "tcp", "s#", "1"); // state number
+    MDNS.addServiceTxt("hap", "tcp", "ff", "0"); // feature flags
+    MDNS.addServiceTxt("hap", "tcp", "ci", "19"); // category identifier  https://github.com/maximkulkin/esp-homekit/blob/a4b8d3e8020c7af92d49ed7f2f35c461f1917d01/include/homekit/types.h#L42-L72
+    MDNS.addServiceTxt("hap", "tcp", "sf", "1"); // status flags
+*/
   } else {
     while (1)
       {
@@ -191,6 +203,7 @@ void setup() {
   delay(1000);
 
   AdvertiseServices();
+  my_homekit_setup();
 
 }
 
@@ -298,5 +311,69 @@ void loop() {
 
 #endif // DEEP_SLEEP
   server.handleClient();                    // Listen for HTTP requests from clients
+  my_homekit_loop();
+}
 
+//==============================
+// Homekit setup and loop
+//==============================
+
+// access your homekit characteristics defined in my_accessory.c
+extern "C" homekit_server_config_t config;
+extern "C" homekit_characteristic_t cha_air_quality;
+extern "C" homekit_characteristic_t cha_pm25_density;
+extern "C" homekit_characteristic_t cha_pm10_density;
+
+static uint32_t next_heap_millis = 0;
+static uint32_t next_report_millis = 0;
+
+void my_homekit_setup() {
+  arduino_homekit_setup(&config);
+}
+
+void my_homekit_loop() {
+  arduino_homekit_loop();
+  const uint32_t t = millis();
+  if (t > next_report_millis) {
+    // report sensor values every 10 seconds
+    next_report_millis = t + 10 * 1000;
+    my_homekit_report();
+  }
+  if (t > next_heap_millis) {
+    // show heap info every 5 seconds
+    next_heap_millis = t + 5 * 1000;
+/*    LOG_D("Free heap: %d, HomeKit clients: %d",
+        ESP.getFreeHeap(), arduino_homekit_connected_clients_count());
+*/
+  }
+}
+
+void my_homekit_report() {
+  float PM25_DENSITY = int(PM_AE_UG_2_5);
+  float PM10_0_DENSITY = int(PM_AE_UG_10_0);
+  float cha_air_quality_value = 1;
+  if (PM_AE_UG_2_5 > 200) {
+    cha_air_quality_value = 5;
+  } else if (PM_AE_UG_2_5 > 150) {
+    cha_air_quality_value = 4;
+  } else if (PM_AE_UG_2_5 > 100) {
+    cha_air_quality_value = 3;
+  } else if (PM_AE_UG_2_5 > 50) {
+    cha_air_quality_value = 2;
+  } else if (PM_AE_UG_2_5 > 0) {
+    cha_air_quality_value = 1;
+  } else {
+    cha_air_quality_value = 0;
+  }
+  cha_pm25_density.value.float_value = PM_AE_UG_2_5;
+  cha_pm10_density.value.float_value = PM_AE_UG_10_0;
+  cha_air_quality.value.uint8_value = cha_air_quality_value;
+//  LOG_D("PM25_DENSITY: %.1f", PM_AE_UG_2_5);
+  homekit_characteristic_notify(&cha_pm25_density, cha_pm25_density.value);
+  homekit_characteristic_notify(&cha_pm10_density, cha_pm10_density.value);
+  homekit_characteristic_notify(&cha_air_quality, cha_air_quality.value);
+}
+
+int random_value(int min, int max) {
+  return min + random(max - min);
 }
