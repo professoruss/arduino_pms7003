@@ -52,6 +52,7 @@ By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
 
 ## Parts
 You can find parts pretty easily on Amazon, but they are cheaper from overseas/AliExpress (Non sponsored links)
+
 __HTIT-W8266__
 - [AliExpress](https://www.aliexpress.com/item/33015504632.html) ~$4.50
 - [Amazon](https://www.amazon.com/ESP8266-development-Arduino-NodeMcu-0-91inch/dp/B074373KTY) ~$10
