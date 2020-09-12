@@ -31,8 +31,8 @@ $ curl http://ESP8266-4a9f.local
 
 ## HomeKit
 Device will be accessible to pair with HomeKit.
-![](/images/homekit-fair.png | width=50%)
-![](/images/siri-fair.png | width=50%)
+![](/images/homekit-fair.png | width=300)
+![](/images/siri-fair.png | width=100)
 
 By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
 
