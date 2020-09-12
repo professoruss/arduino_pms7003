@@ -3,7 +3,10 @@ Horrible code to read data from a Plantower PMS7003 sensor via Arduino and serve
 
 ## Wifi setup
 After flashing, on first boot, the device should start in Access Point mode to allow you to setup your wifi.
-Connect to the access point named ESPP-<uniqueid> and it will redirect you to a webpage that will allow you to select your SSID and enter your password.  Once this is configured, it will restart into Wifi client mode and connect to your local network.
+
+Connect to the access point named `ESPP-<uniqueid>` and it will redirect you to a webpage that will allow you to select your SSID and enter your password.
+
+Once this is configured, it will restart into Wifi client mode and connect to your local network.
 
 ## MDNS
 Device will come up and broadcast multicast dns for _http._tcp.80 using as `ESPP-<uniqueid>.local`.  You can discover the uniqueid by running `dns-sd -B _http._tcp` on MacOS.
@@ -49,11 +52,11 @@ By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
 
 ## Parts
 You can find parts pretty easily on Amazon, but they are cheaper from overseas/AliExpress (Non sponsored links)
-HTIT-W8266
-[AliExpress](https://www.aliexpress.com/item/33015504632.html) ~$4.50
-[Amazon](https://www.amazon.com/ESP8266-development-Arduino-NodeMcu-0-91inch/dp/B074373KTY) ~$10
+__HTIT-W8266__
+- [AliExpress](https://www.aliexpress.com/item/33015504632.html) ~$4.50
+- [Amazon](https://www.amazon.com/ESP8266-development-Arduino-NodeMcu-0-91inch/dp/B074373KTY) ~$10
 
 __PMS7003__
-[AliExpress](https://www.aliexpress.com/item/32784279004.html) ~$17
-[Amazon](https://www.amazon.com/KOOBOOK-PMS7003-Sensor-Precision-Particle/dp/B07SJ4NBT8/) ~$22 without cables
-[eBay](https://www.ebay.com/itm/PMS7003-G7-High-Precision-Laser-Dust-Sensor-PM1-0-PM2-5-PM10-with-Adapter-Cable/183413484479) ~$20
+- [AliExpress](https://www.aliexpress.com/item/32784279004.html) ~$17
+- [Amazon](https://www.amazon.com/KOOBOOK-PMS7003-Sensor-Precision-Particle/dp/B07SJ4NBT8/) ~$22 without cables
+- [eBay](https://www.ebay.com/itm/PMS7003-G7-High-Precision-Laser-Dust-Sensor-PM1-0-PM2-5-PM10-with-Adapter-Cable/183413484479) ~$20
