@@ -20,7 +20,7 @@ U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ 16, /* clock=*/
 SoftwareSerial pmsSerial(01,03);
 
 // PMS_READ_INTERVAL (4:30 min) and PMS_READ_DELAY (30 sec) CAN'T BE EQUAL! Values are also used to detect sensor state.
-static const uint32_t PMS_READ_INTERVAL = 270000;
+static const uint32_t PMS_READ_INTERVAL = 90000;
 static const uint32_t PMS_READ_DELAY = 30000;
 
 // Default sensor state.
@@ -358,7 +358,7 @@ void my_homekit_report() {
     cha_air_quality_value = 4;
   } else if (PM_AE_UG_2_5 > 100) {
     cha_air_quality_value = 3;
-  } else if (PM_AE_UG_2_5 > 50) {
+  } else if (PM_AE_UG_2_5 > 35) {
     cha_air_quality_value = 2;
   } else if (PM_AE_UG_2_5 > 0) {
     cha_air_quality_value = 1;
