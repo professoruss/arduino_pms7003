@@ -20,6 +20,10 @@ $ curl http://ESP8266-4a9f.local
 { "Hostname": "ESP8266-4a9f", "Data": { "PM1.0": "14", "PM2.5": "24", "PM10": "30"}}
 ```
 
+## HomeKit
+Device will be accessible to pair with HomeKit.
+By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
+
 ## Wiring
 ```
     __usb__                          _____
