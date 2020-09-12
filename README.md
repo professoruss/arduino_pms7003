@@ -26,18 +26,30 @@ By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
 
 ## Wiring
 ```
-    __usb__                          _____
-  -|       |- GND ------------ GND -|     |
-  -|       |- 5V ------------- VCC -|     |
-  -|       |-               |-  RX -|     |
-  -|       |-           |---|-- TX -|_____|
-  -|       |-           |   |       PMS7003
-  -|       |-           |   |
-  -|       |-           |   |
-  -|       |- TX (GPIO3)-   |
-  -|       |- RX (GPIO4)----|
+    __usb__                               _____
+  -|       |- GND ----------------- GND -|     |
+  -|       |- 5V ------------------ VCC -|     |
+  -|       |-                    |-  RX -|     |
+  -|       |-                |---|-- TX -|_____|
+  -|       |-                |   |       PMS7003
+  -|       |-                |   |
+  -|       |-                |   |
+  -|       |- TX (GPIO1/TXD0)-   |
+  -|       |- RX (GPIO3/RXD0)----|
   -|       |-
   -|       |-
-  -|_______|-
+  -|___________|-
    HTIT-W8266
 ```
+![](/images/arduino.jpg)
+
+## Parts
+You can find parts pretty easily on Amazon, but they are cheaper from overseas/AliExpress (Non sponsored links)
+HTIT-W8266
+[AliExpress](https://www.aliexpress.com/item/33015504632.html) ~$4.50
+[Amazon](https://www.amazon.com/ESP8266-development-Arduino-NodeMcu-0-91inch/dp/B074373KTY) ~$10
+
+__PMS7003__
+[AliExpress](https://www.aliexpress.com/item/32784279004.html) ~$17
+[Amazon](https://www.amazon.com/KOOBOOK-PMS7003-Sensor-Precision-Particle/dp/B07SJ4NBT8/) ~$22 without cables
+[eBay](https://www.ebay.com/itm/PMS7003-G7-High-Precision-Laser-Dust-Sensor-PM1-0-PM2-5-PM10-with-Adapter-Cable/183413484479) ~$20
