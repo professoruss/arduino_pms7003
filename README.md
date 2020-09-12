@@ -1,5 +1,6 @@
 __This is still work in progress, code and documentation changing frequently - 9/12/2020__
 # arduino_pms7003
+![](/images/hardware.jpg)
 Horrible code to read data from a Plantower PMS7003 sensor via Arduino and serve via http/json and on OLED of Heltec HTIT-W8266.  This also supports being added to HomeKit and will report a "ghetto Air Quality", PM 2.5/10 Densities.
 
 ## Wifi setup
@@ -30,7 +31,20 @@ $ curl http://ESP8266-4a9f.local
 
 ## HomeKit
 Device will be accessible to pair with HomeKit.
+![](/images/homekit-fair.png)
+![](/images/siri-fair.png)
 By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
+
+Due to the nature of HomeKit, reporting is done as levels 0-5, where 0-5 = Unknown, Excellent, Good, Fair, Inferior, Poor
+
+Thresholds are set as:
+|PM2.5|HomeKit|Description|
+|NA|0|Unknown|
+|0-35|1|Excellent|
+|36-100|2|Good|
+|101-150|3|Fair|
+|151-200|4|Inferior|
+|201+|5|Poor|
 
 ## Wiring
 ```
