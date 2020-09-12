@@ -31,21 +31,23 @@ $ curl http://ESP8266-4a9f.local
 
 ## HomeKit
 Device will be accessible to pair with HomeKit.
-![](/images/homekit-fair.png | width=300)
-![](/images/siri-fair.png | width=100)
+<img src='/images/homekit-fair.png' width='50%'>
+<img src='/images/siri-fair.png' width='50%'>
 
 By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
 
 Due to the nature of HomeKit, reporting is done as levels 0-5, where 0-5 = Unknown, Excellent, Good, Fair, Inferior, Poor
 
 Thresholds are set as:
-| PM2.5 | HomeKit | Description |
-| NA | 0 | Unknown |
-| 0-35 | 1 | Excellent |
-| 36-100 | 2 | Good |
-| 101-150 | 3 | Fair |
-| 151-200 | 4 | Inferior |
-| 201+ | 5 | Poor |
+<table>
+<tr><td>PM2.5</td><td>HomeKit</td><td>Description</td></tr>
+<tr><td>NA</td><td>0</td><td>Unknown</td></tr>
+<tr><td>0-35</td><td>1</td><td>Excellent</td></tr>
+<tr><td>36-100</td><td>2</td><td>Good</td></tr>
+<tr><td>101-150</td><td>3</td><td>Fair</td></tr>
+<tr><td>151-200</td><td>4</td><td>Inferior</td></tr>
+<tr><td>201+</td><td>5</td><td>Poor</td></tr>
+</table>
 
 ## Wiring
 ```
