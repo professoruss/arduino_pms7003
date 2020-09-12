@@ -1,6 +1,10 @@
 # arduino_pms7003
 Horrible code to read data from a Plantower PMS7003 sensor via Arduino and serve via http/json and on OLED of Heltec HTIT-W8266.  This also supports being added to HomeKit and will report a "ghetto Air Quality", PM 2.5/10 Densities.
 
+## Wifi setup
+After flashing, on first boot, the device should start in Access Point mode to allow you to setup your wifi.
+Connect to the access point named ESPP-<uniqueid> and it will redirect you to a webpage that will allow you to select your SSID and enter your password.  Once this is configured, it will restart into Wifi client mode and connect to your local network.
+
 ## MDNS
 Device will come up and broadcast multicast dns for _http._tcp.80 using as `ESPP-<uniqueid>.local`.  You can discover the uniqueid by running `dns-sd -B _http._tcp` on MacOS.
 ```
