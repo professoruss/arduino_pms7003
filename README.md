@@ -38,7 +38,7 @@ By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
   -|       |- RX (GPIO3/RXD0)----|
   -|       |-
   -|       |-
-  -|___________|-
+  -|_______|-
    HTIT-W8266
 ```
 ![](/images/arduino.jpg)
