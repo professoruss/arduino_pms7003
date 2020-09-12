@@ -31,6 +31,7 @@ $ curl http://ESP8266-4a9f.local
 
 ## HomeKit
 Device will be accessible to pair with HomeKit.
+
 <img src='/images/homekit-fair.png' width='50%'>
 <img src='/images/siri-fair.png' width='50%'>
 
