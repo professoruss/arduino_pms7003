@@ -73,10 +73,10 @@ void ConnectToWiFi()
   u8g2.sendBuffer();
   delay(1000);
   WiFiManager wifiManager;
-  
+
   //exit after config instead of connecting
   wifiManager.setBreakAfterConfig(true);
-  
+
   //reset settings - for testing
   //wifiManager.resetSettings();
 

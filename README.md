@@ -1,17 +1,21 @@
 __This is still work in progress, code and documentation changing frequently - 9/12/2020__
 # arduino_pms7003
 ![](/images/hardware.jpg)
-Horrible code to read data from a Plantower PMS7003 sensor via Arduino and serve via http/json and on OLED of Heltec HTIT-W8266.  This also supports being added to HomeKit and will report a "ghetto Air Quality", PM 2.5/10 Densities.
+HomeKit ready air quality monitor based on a Heltec HTIT-W8266 (WiFi Kit 8) development board with built-in OLED display and a Plantower PMS7003 sensor via Arduino.  Outputs data via http/json and on OLED screen.  HomeKit support includes "Air Quality", as well as PM 2.5/10 Densities.
 
-## Wifi setup
-After flashing, on first boot, the device should start in Access Point mode to allow you to setup your wifi.
+## WiFi setup
+After flashing, on first boot, the device will start in Access Point mode to allow you to setup your WiFi.
 
-Connect to the access point named `ESPP-<uniqueid>` and it will redirect you to a webpage that will allow you to select your SSID and enter your password.
+Connect to the access point named `ESPP8266-<uniqueid>` and it will redirect you to a webpage that will allow you to select your SSID and enter your password.
 
-Once this is configured, it will restart into Wifi client mode and connect to your local network.
+Once this is configured, it will restart into WiFi client mode and connect to your local network.
+
+WiFi configuration stored locally and will not reset across power cycles/reboots.
 
 ## MDNS
-Device will come up and broadcast multicast dns for _http._tcp.80 using as `ESPP-<uniqueid>.local`.  You can discover the uniqueid by running `dns-sd -B _http._tcp` on MacOS.
+Device will come up and broadcast multicast dns for `ESPP-<uniqueid>.local` and _`http._tcp.80`.
+
+You can discover the uniqueid by running `dns-sd -B _http._tcp` on MacOS.
 ```
 $ dns-sd -B _http._tcp
 Browsing for _http._tcp
@@ -35,11 +39,13 @@ Device will be accessible to pair with HomeKit.
 <img src='/images/homekit-fair.png' width='50%'>
 <img src='/images/siri-fair.png' width='50%'>
 
+To pair from Home app, click `+`, `Add Accessory`, `I Don't Have a Code or Cannot Scan`.  It will show up under `Nearby Accessories`.
+
 By default, pairing code is `867-53-069` and can be modified in `my_accessory.c`
 
 Due to the nature of HomeKit, reporting is done as levels 0-5, where 0-5 = Unknown, Excellent, Good, Fair, Inferior, Poor
 
-Thresholds are set as:
+Thresholds are currently set as: (still tweaking to reflect reality/cross referenced from Temtop 1000S)
 <table>
 <tr><td>PM2.5</td><td>HomeKit</td><td>Description</td></tr>
 <tr><td>NA</td><td>0</td><td>Unknown</td></tr>
@@ -80,3 +86,6 @@ __PMS7003__
 - [AliExpress](https://www.aliexpress.com/item/32784279004.html) ~$17
 - [Amazon](https://www.amazon.com/KOOBOOK-PMS7003-Sensor-Precision-Particle/dp/B07SJ4NBT8/) ~$22 without cables
 - [eBay](https://www.ebay.com/itm/PMS7003-G7-High-Precision-Laser-Dust-Sensor-PM1-0-PM2-5-PM10-with-Adapter-Cable/183413484479) ~$20
+
+## Reference
+- [ESP8266 Built-in OLED – Heltec WiFi Kit 8](https://robotzero.one/heltec-wifi-kit-8/)
