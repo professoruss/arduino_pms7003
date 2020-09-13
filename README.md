@@ -49,11 +49,11 @@ Thresholds are currently set as: (still tweaking to reflect reality/cross refere
 <table>
 <tr><td>PM2.5</td><td>HomeKit</td><td>Description</td></tr>
 <tr><td>NA</td><td>0</td><td>Unknown</td></tr>
-<tr><td>0-35</td><td>1</td><td>Excellent</td></tr>
-<tr><td>36-100</td><td>2</td><td>Good</td></tr>
-<tr><td>101-150</td><td>3</td><td>Fair</td></tr>
-<tr><td>151-200</td><td>4</td><td>Inferior</td></tr>
-<tr><td>201+</td><td>5</td><td>Poor</td></tr>
+<tr><td>0-12</td><td>1</td><td>Excellent</td></tr>
+<tr><td>13-35</td><td>2</td><td>Good</td></tr>
+<tr><td>36-55</td><td>3</td><td>Fair</td></tr>
+<tr><td>56-150</td><td>4</td><td>Inferior</td></tr>
+<tr><td>151+</td><td>5</td><td>Poor</td></tr>
 </table>
 
 ## Wiring

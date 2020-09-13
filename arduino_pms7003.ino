@@ -352,13 +352,13 @@ void my_homekit_report() {
   float PM25_DENSITY = int(PM_AE_UG_2_5);
   float PM10_0_DENSITY = int(PM_AE_UG_10_0);
   float cha_air_quality_value = 1;
-  if (PM_AE_UG_2_5 > 200) {
+  if (PM_AE_UG_2_5 > 150) {
     cha_air_quality_value = 5;
-  } else if (PM_AE_UG_2_5 > 150) {
+  } else if (PM_AE_UG_2_5 > 55) {
     cha_air_quality_value = 4;
-  } else if (PM_AE_UG_2_5 > 100) {
-    cha_air_quality_value = 3;
   } else if (PM_AE_UG_2_5 > 35) {
+    cha_air_quality_value = 3;
+  } else if (PM_AE_UG_2_5 > 12) {
     cha_air_quality_value = 2;
   } else if (PM_AE_UG_2_5 > 0) {
     cha_air_quality_value = 1;
