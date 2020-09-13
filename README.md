@@ -13,7 +13,7 @@ Once this is configured, it will restart into WiFi client mode and connect to yo
 WiFi configuration stored locally and will not reset across power cycles/reboots.
 
 ## MDNS
-Device will come up and broadcast multicast dns for `ESPP-<uniqueid>.local` and _`http._tcp.80`.
+Device will come up and broadcast multicast dns for `ESPP-<uniqueid>.local` and `_http._tcp.80`.
 
 You can discover the uniqueid by running `dns-sd -B _http._tcp` on MacOS.
 ```
@@ -89,3 +89,9 @@ __PMS7003__
 
 ## Reference
 - [ESP8266 Built-in OLED – Heltec WiFi Kit 8](https://robotzero.one/heltec-wifi-kit-8/)
+- [ESP8266WiFi library](https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html)
+- [DNSServer library](https://arduino-esp8266.readthedocs.io/en/latest/libraries.html?dns-server-dnsserver-library#dns-server-dnsserver-library)
+- [WiFiManager library](https://github.com/tzapu/WiFiManager)
+- [ESP8266mDNS library](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266mDNS)
+- [U8g2 display library](https://github.com/olikraus/u8g2)
+- [arduino_homekit_server library](https://github.com/Mixiaoxiao/Arduino-HomeKit-ESP8266)
