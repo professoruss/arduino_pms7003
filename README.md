@@ -1,4 +1,3 @@
-__This is still work in progress, code and documentation changing frequently - 9/12/2020__
 # arduino_pms7003
 ![](/images/hardware.jpg)
 HomeKit ready air quality monitor based on a Heltec HTIT-W8266 (WiFi Kit 8) development board with built-in OLED display and a Plantower PMS7003 sensor via Arduino.  Outputs data via http/json and on OLED screen.  HomeKit support includes "Air Quality", as well as PM 2.5/10 Densities.
